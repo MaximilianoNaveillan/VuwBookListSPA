@@ -6,10 +6,11 @@ let msn = ref('Hola Vue.js 👌 ...');
 const cambiarMensaje = () => {
   msn.value = 'Mensaje cambiado...';
 };
+console.log(msn);
 
 let nombre = 'Maximiliano';
 let apellido = 'Naveillan';
-
+console.log(nombre);
 function saludar() {
   console.log('Hola');
 }
