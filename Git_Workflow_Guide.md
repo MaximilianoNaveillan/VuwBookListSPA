@@ -2,6 +2,8 @@
 
 ---
 
+![Diagrama Git/GitHub](<./assets/1772299410064%20(1).png>)
+
 ## 🎯 Objetivo
 
 Establecer un flujo de trabajo claro para organizar las lecciones y
