@@ -48,9 +48,9 @@ const mostrarDisponibles = ref(true);
 4️⃣ Componente dinámico
 ====================================
 */
-const componeneteActual = ref('TabInicio');
+const componeneteActual = ref(TabInicio);
 
-function cambiarTan(nombre) {
+function cambiarTab(nombre) {
   // en section script usamos .value
   componeneteActual.value = nombre;
 }
@@ -76,9 +76,9 @@ Objeto Reactivo (v-for Obj)
 ================================
 */
 const usuario = reactive({
-  nombre: 'Maximiliano',
-  rol: 'Instructor',
-  activo: true,
+  Nombre: 'Maximiliano',
+  Rol: 'Instructor',
+  Activo: true,
 });
 </script>
 
@@ -92,7 +92,59 @@ const usuario = reactive({
         {{ index + 1 }} - {{ producto.nombre }} (stock: {{ producto.stock }} )
       </li>
     </ul>
+    <!-- v-for con OBJETO | rective() nos permite renderizar un obj {clave:valor} | [{},{}...]-->
+    <h2>Datos de Usuario</h2>
+    <div v-for="(valor, clave, index) in usuario" :key="clave">
+      {{ index + 1 }} - {{ clave }}: {{ valor }}
+    </div>
+    <!-- Clases dinámicas -->
+    <div
+      :class="{
+        active: esActivo,
+        error: tieneError,
+      }"
+    >
+      Estado visual dinámico
+    </div>
+
+    <button @click="esActivo = !esActivo">toggle Active</button>
+    <!-- v-HTML -->
+    <h2>b-html</h2>
+    <div v-html="contenidoHTML"></div>
+
+    <!-- Directivas personalizadas -->
+    <input v-focus placeholder="Este es un input sin foco automático" />
+
+    <!-- Componetes dinámicos -->
+    <h2>Tabs dinámicos</h2>
+    <button @click="cambiarTab(TabInicio)">Inicio</button>
+    <button @click="cambiarTab(TabPerfil)">Perfil</button>
+
+    <!-- Keep-alive mantiene estado -->
+    <keep-alive>
+      <component :is="componeneteActual" />
+    </keep-alive>
+
+    <Card>
+      <template #header>
+        <h3>Header desde padre</h3>
+      </template>
+
+      <p>contenido principal inyectado</p>
+    </Card>
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.container {
+  padding: 20px;
+}
+
+.active {
+  color: green;
+}
+
+.error {
+  color: red;
+}
+</style>
