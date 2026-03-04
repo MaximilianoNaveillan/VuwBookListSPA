@@ -6,7 +6,7 @@ import Product from "./components/Product.vue";
 const products = useProductsStore();
 
 const refFormProduct = ref({
-  id: 0,
+  id: Date.now(),
   name: "",
   stock: 0,
   price: 0,
@@ -18,7 +18,7 @@ const crearProducto = () => {
   console.log(products.getAllProducts.length);
 
   refFormProduct.value = {
-    id: 0,
+
     name: "",
     stock: 0,
     price: 0,
