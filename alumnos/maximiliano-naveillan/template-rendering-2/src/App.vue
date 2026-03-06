@@ -48,7 +48,7 @@ const mostrarDisponibles = ref(true);
 4️⃣ Componente dinámico
 ====================================
 */
-const componeneteActual = ref(TabInicio);
+const componeneteActual = ref(TabPerfil);
 
 function cambiarTab(nombre) {
   // en section script usamos .value
