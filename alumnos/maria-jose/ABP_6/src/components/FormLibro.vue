@@ -11,7 +11,7 @@ const nuevoLibro = reactive({
     descripcion: '',
 
     /* checkbox boolean */
-    disponible: '',
+  disponible: false,
 
     // checkbox múltiple (array[])
     formato : [],
