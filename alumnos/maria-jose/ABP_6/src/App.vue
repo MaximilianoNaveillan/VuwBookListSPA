@@ -1,67 +1,106 @@
+<!-- Aquí vive el estado principal de los libros -->
+<!-- Es el Single Source of Truth de la aplicación -->
+<!-- 
+        App.vue
+           │
+           │ prop:estado libros
+           ▼
+     ListaLibros.vue
+
+        App.vue
+           ↑
+           │
+           │ emit:function          
+     FormLibro.vue
+ -->
 <script setup>
+// ref se usa para datos reactivos simples
 import { ref } from 'vue';
-/* valores reactivos */
-let mensaje = ref('Hola Mundo');
-let aceptarTerminos = ref(false);
-const frutas = ref([]);
-const genero = ref('');
-const pais = ref('');
-const numero = ref('0');
+import FormLibro from './components/FormLibro.vue';
+import ListaLibros from './views/ListaLibros.vue';
+import NavTab from './components/NavTab.vue';
+// Importamos componentes hijos
+
+// Lista reactiva de libros
+// ref([]) crea un array reactivo
+const libros = ref([
+  {
+    id: 0,
+    titulo: 'Introducción a JavaScript',
+    autor: 'Carlos Ramírez',
+    descripcion: 'Guía práctica para aprender los fundamentos de JavaScript desde cero.',
+    disponible: true,
+    formato: ['Físico', 'Digital'],
+    categoria: 'Tecnología',
+    editorial: 'Penguin',
+    stock: 12,
+  },
+  {
+    id: 1,
+    titulo: 'Arquitectura de Software Moderna',
+    autor: 'Laura Méndez',
+    descripcion: 'Explora patrones y buenas prácticas para diseñar aplicaciones escalables.',
+    disponible: true,
+    formato: ['Digital'],
+    categoria: 'Tecnología',
+    editorial: "O'Reilly",
+    stock: 8,
+  },
+  {
+    id: 2,
+    titulo: 'Bases de Datos para Desarrolladores',
+    autor: 'Miguel Torres',
+    descripcion: 'Conceptos esenciales de modelado, SQL y optimización de bases de datos.',
+    disponible: false,
+    formato: ['Físico'],
+    categoria: 'Tecnología',
+    editorial: 'McGraw-Hill',
+    stock: 0,
+  },
+  {
+    id: 3,
+    titulo: 'React y el Ecosistema Frontend',
+    autor: 'Andrea Salinas',
+    descripcion: 'Aprende a construir interfaces modernas usando React y herramientas actuales.',
+    disponible: true,
+    formato: ['Físico', 'Digital'],
+    categoria: 'Tecnología',
+    editorial: 'Penguin',
+    stock: 15,
+  },
+]); // array vacío inicialmente
+
+const tab = ref('ListaLibros');
+
+// función que se ejecutará cuando el formulario envíe un nuevo libro
+function agregarLibro(libro) {
+  //Agregar un ID único
+  const nuevo = {
+    ...libro,
+    id: Date.now(),
+  };
+  // Agregar el nuevo libro al array de libros
+  libros.value.push(nuevo);
+  tab.value = ListaLibros;
+}
+
+function cambiarTab(nuevoTab) {
+  tab.value = nuevoTab;
+}
 </script>
 
 <template>
-  <!-- Que es el Binding Realmente?
-      1.- signofoca conectar valores reactivos con un atributo.
-      Que es un atributo? Es una propiedad de un elemento HTML, por ejemplo:
-     <apertura atributo:"valor-atributo"> </cierre> 
-  -->
-  <!-- En VUE existen dos formas de hacer binding 
-       1.- :value="mensaje" -> v-bind:value="mensaje"
-       2.- v-model="mensaje" -> es un atajo para hacer un binding bid       
-      -->
-  <textarea v-model="mensaje"></textarea>
-
-  <pre>mensaje: {{ mensaje }}</pre>
-  <p>aceptarTerminos: {{ aceptarTerminos }}</p>
-
-  <!-- Checkbox -->
-  <input type="checkbox" v-model="aceptarTerminos" />
-  {{ aceptarTerminos ? 'Aceptado' : 'No Aceptado' }}
-  <!-- Checkbox Array -->
-  <div>
-    <label>
-      <input type="checkbox" value="Manzana" v-model="frutas" />
-    </label>
-    <label>
-      <input type="checkbox" value="Pera" v-model="frutas" />
-    </label>
-    <label>
-      <input type="checkbox" value="Uva" v-model="frutas" />
-    </label>
-    <pre>Frutas seleccionadas: {{ frutas }}</pre>
-  </div>
-  <!--  radio buttons -->
-  <input type="radio" value="Femenino" v-model="genero" /> Femenino
-  <input type="radio" value="Masculino" v-model="genero" /> Masculino
-  <p>Género: {{ genero }}</p>
-  <!-- Select -->
-  <select v-model="pais">
-    <option value="">Seleccione un país</option>
-    <option value="Argentina">Argentina</option>
-    <option value="Brasil">Brasil</option>
-    <option value="Chile">Chile</option>
-  </select>
-  <p>País : {{ pais }}</p>
-  <!-- Modificadores del V-MODEL -->
-  <!-- lazy: actualiza el valor solo cuando el campo pierde el foco -->
-  <input v-model.lazy="mensaje" />
-  <!-- number: convierte el valor a un número -->
-  <input type="number" v-model.number="numero" />
-  <pre>
-    numero: {{ numero }} - tipo: {{ typeof numero }}
-  </pre>
-  <!-- trim: elimina los espacios en blanco al principio y al final -->
-  <input v-model.trim="mensaje" />
+  <NavTab :tabActual="tab" @cambiar="cambiarTab">
+    <template #tituloapp> 📖 BookList SPA </template>
+  </NavTab>
+  <main class="container">
+    <div v-if="tab === 'ListaLibros'">
+      <ListaLibros :libros />
+    </div>
+    <div v-if="tab === 'FormLibro'">
+      <FormLibro @agregar="agregarLibro" />
+    </div>
+  </main>
 </template>
 
 <style scoped></style>
