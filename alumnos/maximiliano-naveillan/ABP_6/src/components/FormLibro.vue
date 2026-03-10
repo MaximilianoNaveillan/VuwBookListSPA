@@ -56,6 +56,7 @@ function enviarFormulario() {
 }
 </script>
 <template>
+  <slot></slot>
   <form @submit.prevent="enviarFormulario">
     <!-- <apertura atributo="valor"></cierre> -->
     <div>

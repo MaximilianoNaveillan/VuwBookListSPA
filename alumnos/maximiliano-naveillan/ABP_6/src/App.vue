@@ -18,12 +18,14 @@
 import { ref } from 'vue';
 import FormLibro from './components/FormLibro.vue';
 import ListaLibros from './views/ListaLibros.vue';
+import NavTab from './components/NavTab.vue';
 // Importamos componentes hijos
 
 // Lista reactiva de libros
 // ref([]) crea un array reactivo
 const libros = ref([
   {
+    id: 0,
     titulo: 'Introducción a JavaScript',
     autor: 'Carlos Ramírez',
     descripcion: 'Guía práctica para aprender los fundamentos de JavaScript desde cero.',
@@ -34,6 +36,7 @@ const libros = ref([
     stock: 12,
   },
   {
+    id: 1,
     titulo: 'Arquitectura de Software Moderna',
     autor: 'Laura Méndez',
     descripcion: 'Explora patrones y buenas prácticas para diseñar aplicaciones escalables.',
@@ -44,6 +47,7 @@ const libros = ref([
     stock: 8,
   },
   {
+    id: 2,
     titulo: 'Bases de Datos para Desarrolladores',
     autor: 'Miguel Torres',
     descripcion: 'Conceptos esenciales de modelado, SQL y optimización de bases de datos.',
@@ -54,6 +58,7 @@ const libros = ref([
     stock: 0,
   },
   {
+    id: 3,
     titulo: 'React y el Ecosistema Frontend',
     autor: 'Andrea Salinas',
     descripcion: 'Aprende a construir interfaces modernas usando React y herramientas actuales.',
@@ -76,7 +81,7 @@ function agregarLibro(libro) {
   };
   // Agregar el nuevo libro al array de libros
   libros.value.push(nuevo);
-  tab.value = 'ListaLibros';
+  tab.value = ListaLibros;
 }
 
 function cambiarTab(nuevoTab) {
@@ -85,36 +90,17 @@ function cambiarTab(nuevoTab) {
 </script>
 
 <template>
-  <nav>
-    <h1>📚 BookList SPA</h1>
-    <ul>
-      <li><a href="#" @click="cambiarTab('FormLibro')">Agregar libro</a></li>
-      <li><a href="#" @click="cambiarTab('ListaLibros')">Mis libros</a></li>
-    </ul>
-    {{ tab }}
-  </nav>
-  <div class="container">
-    <!--
-    El formulario emitirá un evento llamado "agregar"
-    cuando el usuario envíe un libro
-    -->
-    <!--    
-                    ⬆️ (:EMIT -> APP)
-    -->
-    <!-- EMIT       FUMCTION  -->
-    <main v-if="tab === 'FormLibro'">
+  <NavTab :tabActual="tab" @cambiar="cambiarTab">
+    <template #tituloapp> 📖 BookLis SPA </template>
+  </NavTab>
+  <main class="container">
+    <div v-if="tab === 'ListaLibros'">
+      <ListaLibros :libros />
+    </div>
+    <div v-if="tab === 'FormLibro'">
       <FormLibro @agregar="agregarLibro" />
-    </main>
-
-    <!--
-    Pasamos los libros al componente ListaLibros
-    mediante props
-    -->
-    <!--            🔽  (:prop (DEFINEPROPS)-> )  -->
-    <main v-if="tab === 'ListaLibros'">
-      <ListaLibros :libros="libros" />
-    </main>
-  </div>
+    </div>
+  </main>
 </template>
 
 <style scoped></style>
