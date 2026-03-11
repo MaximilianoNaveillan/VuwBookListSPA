@@ -16,9 +16,10 @@
 <script setup>
 // ref se usa para datos reactivos simples
 import { ref } from 'vue';
-import FormLibro from './components/FormLibro.vue';
+import FormLibro from './views/FormLibro.vue';
 import ListaLibros from './views/ListaLibros.vue';
 import NavTab from './components/NavTab.vue';
+import { Routerview } from "vue-router";
 // Importamos componentes hijos
 
 // Lista reactiva de libros
@@ -81,7 +82,7 @@ function agregarLibro(libro) {
   };
   // Agregar el nuevo libro al array de libros
   libros.value.push(nuevo);
-  tab.value = ListaLibros;
+  tab.value = 'ListaLibros';
 }
 
 function cambiarTab(nuevoTab) {
@@ -94,12 +95,12 @@ function cambiarTab(nuevoTab) {
     <template #tituloapp> 📖 BookLis SPA </template>
   </NavTab>
   <main class="container">
-    <div v-if="tab === 'ListaLibros'">
+    <!-- <div v-if="tab === 'ListaLibros'">
       <ListaLibros :libros />
     </div>
     <div v-if="tab === 'FormLibro'">
       <FormLibro @agregar="agregarLibro" />
-    </div>
+    </div> -->
   </main>
 </template>
 
