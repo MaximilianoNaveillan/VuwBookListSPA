@@ -81,7 +81,7 @@ function agregarLibro(libro) {
   };
   // Agregar el nuevo libro al array de libros
   libros.value.push(nuevo);
-  tab.value = ListaLibros;
+  tab.value = 'ListaLibros';
 }
 
 function cambiarTab(nuevoTab) {

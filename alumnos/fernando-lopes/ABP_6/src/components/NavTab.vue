@@ -1,11 +1,11 @@
 <script setup>
-import ListaLibros from '@/views/ListaLibros.vue';
+//import ListaLibros from '@/views/ListaLibros.vue';
 import { defineProps, defineEmits } from 'vue';
-import FormLibro from '@/views/FormLibro.vue';
+//import FormLibro from '@/views/FormLibro.vue';
 
 // props que recibirá el componente
 const props = defineProps({
-  tabActual: Object,
+  tabActual: string,
 });
 
 // evento para informar (pasar funciones al padre) al Padre
@@ -15,6 +15,11 @@ const emit = defineEmits(['cambiar']);
 function seleccionar(tab) {
   emit('cambiar', tab);
 }
+
+/* 
+function nombre(parametro1, parametro2){bloque}
+nobre(argumento1,argumento2...)
+*/
 </script>
 <template>
   <nav class="nav">
