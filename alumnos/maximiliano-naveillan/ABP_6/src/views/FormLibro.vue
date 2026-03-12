@@ -2,7 +2,6 @@
 // importar herramientas de reactividad
 import { reactive, inject } from 'vue';
 import { useRouter } from 'vue-router';
-import ListaLibros from './ListaLibros.vue';
 
 // función global enviada desde APP.vue
 const agregarLibro = inject('agregarLibro');
