@@ -68,7 +68,7 @@ import { RouterLink } from "vue-router"
 }
 
 /* Linea inferior del tab activo */
-
+/* 
 .tabs li.activo::after {
   content: '';
   position: absolute;
@@ -79,7 +79,7 @@ import { RouterLink } from "vue-router"
   background-color: #fff;
   border-radius: 2px;
 }
-
+ */
 /*  */
 </style>
 <!-- 

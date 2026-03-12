@@ -98,4 +98,5 @@ provide("agregarLibro",agregarLibro)
   </main>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>
