@@ -1,26 +1,7 @@
-<!-- Aquí vive el estado principal de los libros -->
-<!-- Es el Single Source of Truth de la aplicación -->
-<!-- 
-        App.vue
-           │
-           │ prop:estado libros
-           ▼
-     ListaLibros.vue
-
-        App.vue
-           ↑
-           │
-           │ emit:function          
-     FormLibro.vue
- -->
 <script setup>
 // ref se usa para datos reactivos simples
-import { ref } from 'vue';
-import FormLibro from './views/FormLibro.vue';
-import ListaLibros from './views/ListaLibros.vue';
+import { ref, provide } from 'vue';
 import NavTab from './components/NavTab.vue';
-import { Routerview } from "vue-router";
-// Importamos componentes hijos
 
 // Lista reactiva de libros
 // ref([]) crea un array reactivo
@@ -71,8 +52,6 @@ const libros = ref([
   },
 ]); // array vacío inicialmente
 
-const tab = ref('ListaLibros');
-
 // función que se ejecutará cuando el formulario envíe un nuevo libro
 function agregarLibro(libro) {
   //Agregar un ID único
@@ -82,25 +61,19 @@ function agregarLibro(libro) {
   };
   // Agregar el nuevo libro al array de libros
   libros.value.push(nuevo);
-  tab.value = 'ListaLibros';
 }
 
-function cambiarTab(nuevoTab) {
-  tab.value = nuevoTab;
-}
+// hacemos disponible el estado global
+provide('libros', libros);
+provide('agregarLibro', agregarLibro);
 </script>
 
 <template>
-  <NavTab :tabActual="tab" @cambiar="cambiarTab">
+  <NavTab>
     <template #tituloapp> 📖 BookLis SPA </template>
   </NavTab>
   <main class="container">
-    <!-- <div v-if="tab === 'ListaLibros'">
-      <ListaLibros :libros />
-    </div>
-    <div v-if="tab === 'FormLibro'">
-      <FormLibro @agregar="agregarLibro" />
-    </div> -->
+    <router-view />
   </main>
 </template>
 

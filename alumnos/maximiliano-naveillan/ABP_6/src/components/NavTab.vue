@@ -1,19 +1,5 @@
 <script setup>
-import { defineProps, defineEmits } from 'vue';
-import { RouterLink } from "vue-router"
-
-// props que recibirá el componente
-const props = defineProps({
-  tabActual: Object,
-});
-
-// evento para informar (pasar funciones al padre) al Padre
-const emit = defineEmits(['cambiar']);
-
-// función que emite el tab eleccionado
-function seleccionar(tab) {
-  emit('cambiar', tab);
-}
+import { RouterLink } from 'vue-router';
 </script>
 <template>
   <nav class="nav">
@@ -23,8 +9,8 @@ function seleccionar(tab) {
     </div>
     <!-- tabs -->
     <ul class="tabs">
-      <router-link to="/">Mis Libros</router-link>
-      <router-link to="/form-libros">Agregar libro</router-link>
+      <router-link to="/" class="link">Mis Libros</router-link>
+      <router-link to="/form-libros" class="link">Agregar libro</router-link>
       <!-- <li :class="{ activo: tabActual === 'FormLibro' }" @click="seleccionar('FormLibro')">
         Agregar libro
       </li>
@@ -59,27 +45,16 @@ function seleccionar(tab) {
   padding: 0;
 }
 
-.tabs li {
-  cursor: pointer;
-  padding: 10px 4px;
+.link {
+  color: white;
+  text-decoration: none;
+}
+
+.router-link-active {
   position: relative;
-  opacity: 0.8;
-  transition: 0.2s;
 }
 
-.tabs li:hover {
-  opacity: 1;
-}
-
-/* tab activo */
-
-.tabs li.activo {
-  opacity: 1;
-}
-
-/* Linea inferior del tab activo */
-
-.tabs li.activo::after {
+.router-link-active::after {
   content: '';
   position: absolute;
   left: 0;
@@ -87,9 +62,8 @@ function seleccionar(tab) {
   width: 100%;
   height: 3px;
   background-color: #fff;
-  border-radius: 2px;
+  border-radius: 1.5px;
 }
-
 /*  */
 </style>
 <!-- 

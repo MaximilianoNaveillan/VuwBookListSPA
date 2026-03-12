@@ -1,69 +1,46 @@
 <script setup>
 // importar herramientas de reactividad
-import { reactive, computed } from 'vue';
+import { reactive, inject } from 'vue';
+import { useRouter } from 'vue-router';
+import ListaLibros from './ListaLibros.vue';
 
-// defineEmits perimte emitir eventos al componente padre
-const emit = defineEmits(['agregar']);
+// función global enviada desde APP.vue
+const agregarLibro = inject('agregarLibro');
 
-// reactive se usa para objetos reactivos, se usa en formularios
-//{clave:valor} --> {clave.dinámica:valor.dinamico}
+// router para redireccionar
+const router = useRouter();
+
 const nuevoLibro = reactive({
   titulo: '',
   autor: '',
   descripcion: '',
-
-  /* checkbox boolean */
   disponible: false,
-
-  // checkbox múltiple (array[])
   formato: [],
-
-  // radio buuton
   categoria: '',
-
-  // select
   editorial: '',
-
-  // número
   stock: 0,
 });
 
-// computed permite crear propiedades computadas derivadas
-const formularioValido = computed(() => {
-  return (
-    nuevoLibro.titulo.length > 2 &&
-    nuevoLibro.autor.length > 2 &&
-    nuevoLibro.categoria !== '' &&
-    nuevoLibro.editorial !== ''
-  );
-});
-
-// function que se ejecuta al enviar el formulario emit(evento)
-function enviarFormulario() {
-  // si el formuario no es válido
-  // detenemos la ejecución (return)
-  if (!formularioValido.value) return;
-  //emitimos el libro al componente padre App.vue
-  emit('agregar', { ...nuevoLibro });
-  /* nuevoLibro.titulo = '';
-  nuevoLibro.autor = '';
-  nuevoLibro.descripcion = '';
-  nuevoLibro.disponible = '';
-  nuevoLibro.formato = [];
-  nuevoLibro.categoria = '';
-  nuevoLibro.editorial = '';
-  nuevoLibro.stock = ''; */
+// function submit
+function guardarLibro() {
+  agregarLibro({ ...nuevoLibro });
+  router.push('/');
 }
 </script>
 <template>
   <slot></slot>
-  <form @submit.prevent="enviarFormulario">
+  <form @submit.prevent="guardarLibro">
     <!-- <apertura atributo="valor"></cierre> -->
     <div>
-      <input type="text" placeholder="Título del libro" v-model.trim="nuevoLibro.titulo" />
+      <input
+        type="text"
+        placeholder="Título del libro"
+        v-model.trim="nuevoLibro.titulo"
+        requiered
+      />
     </div>
     <div>
-      <input type="text" placeholder="Autor" v-model.trim="nuevoLibro.autor" />
+      <input type="text" placeholder="Autor" v-model.trim="nuevoLibro.autor" required />
     </div>
     <div>
       <textarea v-model="nuevoLibro.descripcion" placeholder="Descripción"></textarea>
@@ -103,11 +80,11 @@ function enviarFormulario() {
       </select>
     </label>
     <label>
-      <input type="number" v-model.number="nuevoLibro.stock" />
+      <input type="number" v-model.number="nuevoLibro.stock" min="0" />
     </label>
     <!-- botón controlado por computed -->
 
-    <button :disabled="!formularioValido">Guardar Libro</button>
+    <button>Guardar Libro</button>
   </form>
 </template>
 <style scoped></style>

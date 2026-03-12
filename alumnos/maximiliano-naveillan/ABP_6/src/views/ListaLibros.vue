@@ -1,8 +1,7 @@
 <script setup>
-// defineProps permite recibir props
-defineProps({
-  libros: Array,
-});
+import { inject } from "vue";
+// fprop global enviada desde APP.vue
+const libros = inject("libros");
 </script>
 
 <template>
