@@ -1,6 +1,7 @@
 <script setup>
 import { useLibroStore } from "@/stores/libroStore";
 
+
 const libroStore = useLibroStore();
 </script>
 
@@ -8,6 +9,7 @@ const libroStore = useLibroStore();
   <h2>
     <p>Lista</p>
     <p>{{ libroStore.libros }}</p>
+
   </h2>
 </template>
 

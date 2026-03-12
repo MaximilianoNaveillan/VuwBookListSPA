@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useLibroStore } from "@/stores/libroStore";
 import { useCategoriaStore } from "@/stores/categoriaStore";
 import { v4 as uuidv4 } from "uuid";
+import FormInput from "@/components/FormInput.vue";
 
 const libroStore = useLibroStore();
 const categoriaStore = useCategoriaStore();
@@ -42,27 +43,30 @@ const agregarCategoria = () => {
   }
   if (
     categoriaStore.categorias.find(
-      (cat) => cat.nombre === categoriaStructure.value.nombre
+      (cat) => cat.nombre === categoriaStructure.value.nombre,
     )
   ) {
     alert("La categoria ya existe");
     return;
   }
-  categoriaStore.agregarCategoria({ ...categoriaStructure.value, id: uuidv4() });
+  categoriaStore.agregarCategoria({
+    ...categoriaStructure.value,
+    id: uuidv4(),
+  });
   categoriaStructure.value.nombre = "";
 };
+
+let inputRef = ref("la referncia");
 </script>
 
 <template>
   <div class="md-page">
-
     <header class="md-page-header">
       <h1 class="md-display-small">Biblioteca</h1>
       <p class="md-body-large">Gestiona tus libros y categorías</p>
     </header>
 
     <main class="md-layout">
-
       <section class="md-card">
         <h2 class="md-title-large">Nueva Categoría</h2>
         <p class="md-body-medium md-on-surface-variant">
@@ -82,7 +86,9 @@ const agregarCategoria = () => {
               Nombre de categoría
             </label>
             <fieldset class="md-text-field__outline">
-              <legend class="md-text-field__legend"><span>Nombre de categoría</span></legend>
+              <legend class="md-text-field__legend">
+                <span>Nombre de categoría</span>
+              </legend>
             </fieldset>
           </div>
 
@@ -91,6 +97,13 @@ const agregarCategoria = () => {
             Agregar categoría
           </button>
         </form>
+
+        <div>
+          <FormInput nombre="Categoría" tipo="text" v-model="inputRef" />
+          <h4>
+            {{ inputRef }}
+          </h4>
+        </div>
       </section>
 
       <section v-if="categoriaStore.categorias.length > 0" class="md-card">
@@ -100,7 +113,6 @@ const agregarCategoria = () => {
         </p>
 
         <form @submit.prevent="agregarLibro" class="md-form">
-
           <div class="md-text-field">
             <input
               id="libro-nombre"
@@ -109,9 +121,13 @@ const agregarCategoria = () => {
               placeholder=" "
               v-model="libroStructure.nombre"
             />
-            <label for="libro-nombre" class="md-text-field__label">Nombre del libro</label>
+            <label for="libro-nombre" class="md-text-field__label"
+              >Nombre del libro</label
+            >
             <fieldset class="md-text-field__outline">
-              <legend class="md-text-field__legend"><span>Nombre del libro</span></legend>
+              <legend class="md-text-field__legend">
+                <span>Nombre del libro</span>
+              </legend>
             </fieldset>
           </div>
 
@@ -123,9 +139,13 @@ const agregarCategoria = () => {
               placeholder=" "
               v-model="libroStructure.descripcion"
             />
-            <label for="libro-desc" class="md-text-field__label">Descripción</label>
+            <label for="libro-desc" class="md-text-field__label"
+              >Descripción</label
+            >
             <fieldset class="md-text-field__outline">
-              <legend class="md-text-field__legend"><span>Descripción</span></legend>
+              <legend class="md-text-field__legend">
+                <span>Descripción</span>
+              </legend>
             </fieldset>
           </div>
 
@@ -137,7 +157,9 @@ const agregarCategoria = () => {
               placeholder=" "
               v-model="libroStructure.editor"
             />
-            <label for="libro-editor" class="md-text-field__label">Editor</label>
+            <label for="libro-editor" class="md-text-field__label"
+              >Editor</label
+            >
             <fieldset class="md-text-field__outline">
               <legend class="md-text-field__legend"><span>Editor</span></legend>
             </fieldset>
@@ -145,13 +167,18 @@ const agregarCategoria = () => {
 
           <div class="md-chip-group-section">
             <label class="md-label-large">Categoría</label>
-            <p class="md-body-small md-on-surface-variant">Selecciona una categoría para el libro</p>
+            <p class="md-body-small md-on-surface-variant">
+              Selecciona una categoría para el libro
+            </p>
             <div class="md-chip-group">
               <label
                 v-for="cat in categoriaStore.getAllCategorias"
                 :key="cat.id"
                 class="md-filter-chip"
-                :class="{ 'md-filter-chip--selected': libroStructure.categoria === cat.nombre }"
+                :class="{
+                  'md-filter-chip--selected':
+                    libroStructure.categoria === cat.nombre,
+                }"
               >
                 <input
                   type="radio"
@@ -179,14 +206,13 @@ const agregarCategoria = () => {
           Crea al menos una categoría para poder agregar libros.
         </p>
       </div>
-
     </main>
   </div>
 </template>
 
 <style scoped>
 .md-page {
-  font-family: 'Roboto', 'Google Sans', sans-serif;
+  font-family: "Roboto", "Google Sans", sans-serif;
   background-color: var(--md-sys-color-background);
   min-height: 100vh;
   padding: 24px;
@@ -332,7 +358,9 @@ const agregarCategoria = () => {
   border: 1px solid var(--md-sys-color-outline);
   border-radius: var(--md-sys-shape-corner-extra-small);
   pointer-events: none;
-  transition: border-color 150ms, border-width 150ms;
+  transition:
+    border-color 150ms,
+    border-width 150ms;
 }
 
 .md-text-field__legend {
@@ -345,8 +373,14 @@ const agregarCategoria = () => {
   transition: max-width 150ms cubic-bezier(0.2, 0, 0, 1);
 }
 
-.md-text-field__input:focus ~ .md-text-field__label ~ .md-text-field__outline .md-text-field__legend,
-.md-text-field__input:not(:placeholder-shown) ~ .md-text-field__label ~ .md-text-field__outline .md-text-field__legend {
+.md-text-field__input:focus
+  ~ .md-text-field__label
+  ~ .md-text-field__outline
+  .md-text-field__legend,
+.md-text-field__input:not(:placeholder-shown)
+  ~ .md-text-field__label
+  ~ .md-text-field__outline
+  .md-text-field__legend {
   max-width: 100%;
 }
 
@@ -381,7 +415,7 @@ const agregarCategoria = () => {
 }
 
 .md-button--filled::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   background: var(--md-sys-color-on-primary);
@@ -389,8 +423,12 @@ const agregarCategoria = () => {
   transition: opacity 200ms;
 }
 
-.md-button--filled:hover::before { opacity: 0.08; }
-.md-button--filled:active::before { opacity: 0.12; }
+.md-button--filled:hover::before {
+  opacity: 0.08;
+}
+.md-button--filled:active::before {
+  opacity: 0.12;
+}
 
 .md-button--filled:hover {
   box-shadow: var(--md-sys-elevation-level1);
