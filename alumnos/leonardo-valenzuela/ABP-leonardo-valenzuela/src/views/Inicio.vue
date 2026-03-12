@@ -56,7 +56,6 @@ const agregarCategoria = () => {
   categoriaStructure.value.nombre = "";
 };
 
-let inputRef = ref("la referncia");
 </script>
 
 <template>
@@ -99,10 +98,6 @@ let inputRef = ref("la referncia");
         </form>
 
         <div>
-          <FormInput nombre="Categoría" tipo="text" v-model="inputRef" />
-          <h4>
-            {{ inputRef }}
-          </h4>
         </div>
       </section>
 
