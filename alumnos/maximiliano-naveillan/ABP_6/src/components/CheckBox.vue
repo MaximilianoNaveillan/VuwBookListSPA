@@ -16,7 +16,7 @@ const model = defineModel();
           <path d="M20 6L9 17l-5-5" />
         </svg>
       </span>
-      <span class="checkbox-label">.. {{ label }}</span>
+      <span class="checkbox-label">{{ label }}</span>
     </label>
   </div>
 </template>

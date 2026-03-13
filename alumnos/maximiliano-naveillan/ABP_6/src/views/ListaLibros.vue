@@ -1,7 +1,7 @@
 <script setup>
-import { inject } from "vue";
+import { inject } from 'vue';
 // fprop global enviada desde APP.vue
-const libros = inject("libros");
+const libros = inject('libros');
 </script>
 
 <template>
