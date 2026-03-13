@@ -2,6 +2,9 @@
 // importar herramientas de reactividad
 import { reactive, inject } from 'vue';
 import { useRouter } from 'vue-router';
+import TextField from '../components/TextField.vue';
+import TextArea from '../components/TextArea.vue';
+import CheckBox from '../components/CheckBox.vue';
 
 // función global enviada desde APP.vue
 const agregarLibro = inject('agregarLibro');
@@ -30,36 +33,37 @@ function guardarLibro() {
   <slot></slot>
   <form @submit.prevent="guardarLibro">
     <!-- <apertura atributo="valor"></cierre> -->
-    <div>
-      <input
-        type="text"
-        placeholder="Título del libro"
-        v-model.trim="nuevoLibro.titulo"
-        requiered
-      />
+    <div class="content-field">
+      <text-field nombre="Título del libro" tipo="text" v-model="nuevoLibro.titulo" />
     </div>
-    <div>
-      <input type="text" placeholder="Autor" v-model.trim="nuevoLibro.autor" required />
+    <div class="content-field">
+      <text-field nombre="autor" tipo="text" v-model="nuevoLibro.autor" />
     </div>
-    <div>
-      <textarea v-model="nuevoLibro.descripcion" placeholder="Descripción"></textarea>
+    <div class="content-field">
+      <text-area nombre="Descripción" v-model="nuevoLibro.descripcion"></text-area>
     </div>
     <!-- Checkbox booleano -->
-    <label>
-      <input type="checkbox" v-model="nuevoLibro.disponible" />
-      Disponible
-    </label>
+
+    <div class="content-field">
+      <label>
+        <check-box label="Disponible" v-model="nuevoLibro.disponible" />
+      </label>
+    </div>
 
     <!-- Checkbox múltiple -->
     <h4>Formatos</h4>
-    <label>
-      <input type="checkbox" value="Físico" v-model="nuevoLibro.formato" />
-      Físico
-    </label>
-    <label>
-      <input type="checkbox" value="digital" v-model="nuevoLibro.formato" />
-      Digital
-    </label>
+    <div class="content-field">
+      <label>
+        <check-box label="Físico" value="Físico" v-model="nuevoLibro.formato" />
+      </label>
+    </div>
+
+    <div class="content-field">
+      <label>
+        <check-box label="Digital" value="Digital" v-model="nuevoLibro.formato" />
+      </label>
+    </div>
+
     <!-- radi buttons -->
     <h4>Categoría</h4>
     <label>
@@ -86,4 +90,8 @@ function guardarLibro() {
     <button>Guardar Libro</button>
   </form>
 </template>
-<style scoped></style>
+<style scoped>
+.content-field {
+  padding: 16px 0;
+}
+</style>
