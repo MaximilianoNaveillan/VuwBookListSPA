@@ -15,11 +15,13 @@ const libros = inject('libros');
 
     <ul>
       <li v-for="libro in libros" :key="libro.id">
-        <strong>{{ libro.titulo }}</strong>
+        <router-link :to="`/detalle-libro/${libro.id}`">
+          <strong>{{ libro.titulo }}</strong>
 
-        - {{ libro.autor }}
+          - {{ libro.autor }}
 
-        ({{ libro.categoria }})
+          ({{ libro.categoria }})
+        </router-link>
       </li>
     </ul>
   </div>
