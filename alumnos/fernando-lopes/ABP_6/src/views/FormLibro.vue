@@ -45,10 +45,19 @@ function enviarFormulario() {
   if (!formularioValido.value) return;
   //emitimos el libro al componente padre App.vue
   emit('agregar', { ...nuevoLibro });
+  /* nuevoLibro.titulo = '';
+  nuevoLibro.autor = '';
+  nuevoLibro.descripcion = '';
+  nuevoLibro.disponible = '';
+  nuevoLibro.formato = [];
+  nuevoLibro.categoria = '';
+  nuevoLibro.editorial = '';
+  nuevoLibro.stock = ''; */
 }
 </script>
 <template>
-  <form>
+  <slot></slot>
+  <form @submit.prevent="enviarFormulario">
     <!-- <apertura atributo="valor"></cierre> -->
     <div>
       <input type="text" placeholder="Título del libro" v-model.trim="nuevoLibro.titulo" />
@@ -85,15 +94,20 @@ function enviarFormulario() {
       <input type="radio" value="Tecnología" v-model="nuevoLibro.categoria" />
       Tecnología
     </label>
-    <select v-model="nuevoLibro.editorial">
-      <option disabled value="">Selecciona una editorial</option>
-      <option>Planeta</option>
-      <option>Penguin</option>
-      <option>Nova</option>
-    </select>
-    <input type="number" v-model.number="nuevoLibro.stock" />
-  </form>
+    <label>
+      <select v-model="nuevoLibro.editorial">
+        <option disabled value="">Selecciona una editorial</option>
+        <option>Planeta</option>
+        <option>Penguin</option>
+        <option>Nova</option>
+      </select>
+    </label>
+    <label>
+      <input type="number" v-model.number="nuevoLibro.stock" />
+    </label>
+    <!-- botón controlado por computed -->
 
-  <pre>{{ nuevoLibro }}</pre>
+    <button :disabled="!formularioValido">Guardar Libro</button>
+  </form>
 </template>
 <style scoped></style>
