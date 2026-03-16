@@ -1,34 +1,17 @@
 <script setup>
-// importar herramientas de reactividad
-import { reactive, computed } from 'vue';
-
-// defineEmits perimte emitir eventos al componente padre
-const emit = defineEmits(['agregar']);
-
-// reactive se usa para objetos reactivos, se usa en formularios
-//{clave:valor} --> {clave.dinámica:valor.dinamico}
+import { reactive, computed, inject } from 'vue';
+const agregarLibro = inject('agregarLibro');
 const nuevoLibro = reactive({
   titulo: '',
   autor: '',
   descripcion: '',
-
-  /* checkbox boolean */
   disponible: false,
-
-  // checkbox múltiple (array[])
   formato: [],
-
-  // radio buuton
   categoria: '',
-
-  // select
   editorial: '',
-
-  // número
   stock: 0,
 });
 
-// computed permite crear propiedades computadas derivadas
 const formularioValido = computed(() => {
   return (
     nuevoLibro.titulo.length > 2 &&
@@ -38,27 +21,14 @@ const formularioValido = computed(() => {
   );
 });
 
-// function que se ejecuta al enviar el formulario emit(evento)
 function enviarFormulario() {
-  // si el formuario no es válido
-  // detenemos la ejecución (return)
   if (!formularioValido.value) return;
-  //emitimos el libro al componente padre App.vue
-  emit('agregar', { ...nuevoLibro });
-  /* nuevoLibro.titulo = '';
-  nuevoLibro.autor = '';
-  nuevoLibro.descripcion = '';
-  nuevoLibro.disponible = '';
-  nuevoLibro.formato = [];
-  nuevoLibro.categoria = '';
-  nuevoLibro.editorial = '';
-  nuevoLibro.stock = ''; */
+  agregarLibro({ ...nuevoLibro });
 }
 </script>
 <template>
   <slot></slot>
   <form @submit.prevent="enviarFormulario">
-    <!-- <apertura atributo="valor"></cierre> -->
     <div>
       <input type="text" placeholder="Título del libro" v-model.trim="nuevoLibro.titulo" />
     </div>
@@ -68,7 +38,7 @@ function enviarFormulario() {
     <div>
       <textarea v-model="nuevoLibro.descripcion" placeholder="Descripción"></textarea>
     </div>
-    <!-- Checkbox booleano -->
+
     <label>
       <input type="checkbox" v-model="nuevoLibro.disponible" />
       Disponible

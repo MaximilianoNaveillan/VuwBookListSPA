@@ -1,25 +1,5 @@
 <script setup>
-//import ListaLibros from '@/views/ListaLibros.vue';
-import { defineProps, defineEmits } from 'vue';
-//import FormLibro from '@/views/FormLibro.vue';
-
-// props que recibirá el componente
-const props = defineProps({
-  tabActual: string,
-});
-
-// evento para informar (pasar funciones al padre) al Padre
-const emit = defineEmits(['cambiar']);
-
-// función que emite el tab eleccionado
-function seleccionar(tab) {
-  emit('cambiar', tab);
-}
-
-/* 
-function nombre(parametro1, parametro2){bloque}
-nobre(argumento1,argumento2...)
-*/
+import { RouterLink } from 'vue-router';
 </script>
 <template>
   <nav class="nav">
@@ -29,12 +9,8 @@ nobre(argumento1,argumento2...)
     </div>
     <!-- tabs -->
     <ul class="tabs">
-      <li :class="{ activo: tabActual === 'FormLibro' }" @click="seleccionar('FormLibro')">
-        Agregar libro
-      </li>
-      <li :class="{ activo: tabActual === 'ListaLibros' }" @click="seleccionar('ListaLibros')">
-        Mis libros
-      </li>
+      <router-link to="/"> mis libros </router-link>
+      <router-link to="/form-libro"> agregar libros </router-link>
     </ul>
   </nav>
 </template>

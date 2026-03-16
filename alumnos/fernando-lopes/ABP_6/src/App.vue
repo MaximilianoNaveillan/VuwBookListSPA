@@ -14,10 +14,7 @@
      FormLibro.vue
  -->
 <script setup>
-// ref se usa para datos reactivos simples
-import { ref } from 'vue';
-import FormLibro from './views/FormLibro.vue';
-import ListaLibros from './views/ListaLibros.vue';
+import { provide, ref } from 'vue';
 import NavTab from './components/NavTab.vue';
 // Importamos componentes hijos
 
@@ -70,8 +67,6 @@ const libros = ref([
   },
 ]); // array vacío inicialmente
 
-const tab = ref('ListaLibros');
-
 // función que se ejecutará cuando el formulario envíe un nuevo libro
 function agregarLibro(libro) {
   //Agregar un ID único
@@ -84,23 +79,15 @@ function agregarLibro(libro) {
   tab.value = 'ListaLibros';
 }
 
-function cambiarTab(nuevoTab) {
-  tab.value = nuevoTab;
-}
+provide('agregarLibro', agregarLibro);
+provide('libros', libros);
 </script>
 
 <template>
-  <NavTab :tabActual="tab" @cambiar="cambiarTab">
+  <NavTab>
     <template #tituloapp> 📖 BookLis SPA </template>
   </NavTab>
-  <main class="container">
-    <div v-if="tab === 'ListaLibros'">
-      <ListaLibros :libros />
-    </div>
-    <div v-if="tab === 'FormLibro'">
-      <FormLibro @agregar="agregarLibro" />
-    </div>
-  </main>
+  <main class="container"><router-view /></main>
 </template>
 
 <style scoped></style>
