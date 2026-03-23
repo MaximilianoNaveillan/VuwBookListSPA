@@ -1,0 +1,102 @@
+:root {
+  /* Colors */
+  /* ===== PRIMARY ===== */
+  --primary-50: #d8e6f1;
+  --primary-100: #b9ced9;
+  --primary-200: #9bb3c1;
+  --primary-300: #7a9aaa;
+  --primary-400: #64889b;
+  --primary-500: #4a7489;
+  --primary-600: #3d6578;
+  --primary-700: #2f5161;
+  --primary-800: #213e4c;
+  --primary-900: #132a35;
+
+  /* ===== SECONDARY ===== */
+  --gray-900: #121212; /* Fondo principal */
+  --gray-800: #1e1e1e; /* Contenedores */
+  --gray-700: #2c2c2c; /* Elementos secundarios */
+  --gray-600: #3d3d3d; /* Bordes suaves */
+  --gray-500: #555555; /* Texto deshabilitado */
+  --gray-400: #777777; /* Texto secundario */
+  --gray-300: #999999; /* Líneas divisorias */
+  --gray-200: #b3b3b3; /* Texto claro */
+  --gray-100: #e0e0e0; /* Texto muy claro */
+  --gray-50: #f5f5f5; /* Contraste máximo */
+}
+
+body {
+  background-color: var(--gray-900);
+  color: var(--gray-200);
+  font-family: 'Roboto', sans-serif;
+}
+
+/* ===========================
+   Tipografía base
+   =========================== */
+body {
+  font-family: 'Roboto', sans-serif;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--gray-100); /* Texto claro sobre fondo oscuro */
+  background-color: var(--gray-900); /* Fondo principal dark */
+  margin: 0;
+  padding: 0;
+
+  /* Mejora la legibilidad en dark mode */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h1 {
+  font-size: 2.5rem;
+}
+h2 {
+  font-size: 2rem;
+}
+h3 {
+  font-size: 1.75rem;
+}
+h4 {
+  font-size: 1.5rem;
+}
+h5 {
+  font-size: 1.25rem;
+}
+h6 {
+  font-size: 1rem;
+}
+
+/* Párrafos */
+p {
+  margin: 0 0 1em;
+}
+
+/* Padding */
+
+main {
+  padding: 24px; /* espacio interno */
+  background-color: var(--gray-900); /* fondo dark mode */
+  color: var(--gray-100); /* texto claro */
+  min-height: 100vh; /* asegura que ocupe toda la altura */
+  box-sizing: border-box; /* incluye padding en el cálculo del ancho */
+}
+
+/* grilla de libros */
+
+.grid-libros {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+}
+
+.router-link-exact-active {
+  color: var(--primary-700);
+}
