@@ -1,7 +1,6 @@
 <script setup>
-import { inject } from 'vue';
-// fprop global enviada desde APP.vue
-const libros = inject('libros');
+import { useLibrosStore } from '../stores/librosStore';
+const store = useLibrosStore();
 </script>
 
 <template>
@@ -10,12 +9,12 @@ const libros = inject('libros');
 
     <!-- mensaje si no hay libros -->
 
-    <p v-if="libros.length === 0">No hay libros aún</p>
+    <p v-if="store.libros.length === 0">No hay libros aún</p>
 
     <!-- renderizado de lista -->
 
     <ul>
-      <li v-for="libro in libros" :key="libro.id">
+      <li v-for="libro in store.libros" :key="libro.id">
         <strong>{{ libro.titulo }}</strong>
 
         - {{ libro.autor }}

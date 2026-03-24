@@ -5,12 +5,12 @@ import { useRouter } from 'vue-router';
 import TextField from '../components/TextField.vue';
 import TextArea from '../components/TextArea.vue';
 import CheckBox from '../components/CheckBox.vue';
-
-// función global enviada desde APP.vue
-const agregarLibro = inject('agregarLibro');
+import { useLibrosStore } from '../stores/librosStore';
 
 // router para redireccionar
 const router = useRouter();
+
+const store = useLibrosStore();
 
 const nuevoLibro = reactive({
   titulo: '',
@@ -25,7 +25,8 @@ const nuevoLibro = reactive({
 
 // function submit
 function guardarLibro() {
-  agregarLibro({ ...nuevoLibro });
+  store.agregarLibro({ ...nuevoLibro });
+
   router.push('/');
 }
 </script>
