@@ -95,13 +95,81 @@ provide("eliminarLibro",eliminarLibro)
 </script>
 
 <template>
-  <NavTab >
-    <template #tituloapp> 📖 BookLis SPA </template>
-  </NavTab>
-  <main class="container">
-    <router-view />
-  </main>
+  <div class="app-shell">
+    <NavTab>
+      <template #tituloapp>
+        <span class="app-title">BookList SPA</span>
+      </template>
+    </NavTab>
+    <main class="container">
+      <router-view />
+    </main>
+    <footer class="app-footer">
+      <span class="app-footer__brand">Editorial Nova</span>
+      <p class="app-footer__copy">© 2024 Editorial Nova. Todos los derechos reservados.</p>
+    </footer>
+  </div>
 </template>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,200..800;1,6..72,200..800&family=Work+Sans:wght@300;400;500;600&family=Public+Sans:wght@400;600&family=Noto+Sans+JP:wght@300;500&display=swap');
+
+.app-shell {
+  --primary: #006b5f;
+  --primary-container: #00a896;
+  --secondary: #633dd3;
+  --secondary-container: #7e5bef;
+  --surface: #f5fbf8;
+  --surface-container-low: #eff5f2;
+  --surface-container-lowest: #ffffff;
+  --on-surface: #171d1b;
+  --on-surface-variant: #3c4946;
+  --outline-variant: #bbcac5;
+
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Work Sans', sans-serif;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.container {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  flex: 1;
+}
+
+.app-title {
+  font-family: 'Newsreader', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: inherit;
+}
+
+.app-footer {
+  background-color: var(--surface-container-low);
+  padding: 2rem 3rem;
+  text-align: center;
+  margin-top: auto;
+}
+
+.app-footer__brand {
+  font-family: 'Newsreader', serif;
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--primary);
+}
+
+.app-footer__copy {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 0.8rem;
+  color: var(--on-surface-variant);
+  letter-spacing: 0.03em;
+  margin-top: 0.5rem;
+}
 </style>
