@@ -1,7 +1,8 @@
 <script setup>
-import { inject } from "vue";
+import { inject, provide } from "vue";
 // fprop global enviada desde APP.vue
 const libros = inject("libros");
+const eliminarLibro = inject("eliminarLibro")
 </script>
 
 <template>
@@ -16,11 +17,15 @@ const libros = inject("libros");
 
     <ul>
       <li v-for="libro in libros" :key="libro.id">
+        <router-link :to="`detalle-libro/${libro.id}`" class="link">
         <strong>{{ libro.titulo }}</strong>
 
         - {{ libro.autor }}
 
         ({{ libro.categoria }})
+
+        <button @click="eliminarLibro(libro.id)">Eliminar Libro</button>
+        </router-link>
       </li>
     </ul>
   </div>

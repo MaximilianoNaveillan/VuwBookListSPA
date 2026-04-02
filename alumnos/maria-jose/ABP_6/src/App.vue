@@ -83,10 +83,15 @@ function agregarLibro(libro) {
   libros.value.push(nuevo);
 }
 
+function eliminarLibro(id) {
+  libros.value = libros.value.filter(libro => libro.id !== id)
+}
+
 
 // hacemos disponible el estado global
 provide("libros",libros)
 provide("agregarLibro",agregarLibro)
+provide("eliminarLibro",eliminarLibro)
 </script>
 
 <template>

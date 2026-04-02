@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Checklist ABP_6 — Modo ADHD</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0fdf4;
+      color: #1f2937;
+      padding: 24px 16px;
+      min-height: 100vh;
+    }
+    header {
+      background: #0f766e;
+      color: white;
+      border-radius: 16px;
+      padding: 20px 24px;
+      margin-bottom: 24px;
+    }
+    header h1 { font-size: 22px; margin-bottom: 4px; }
+    header p  { font-size: 13px; opacity: 0.85; }
+    .timer-bar { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .timer-pill {
+      background: rgba(255,255,255,0.2);
+      border-radius: 999px;
+      padding: 4px 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    .progress-wrap {
+      background: white;
+      border-radius: 12px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    }
+    .progress-label {
+      display: flex;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 8px;
+    }
+    .progress-bg { background: #e5e7eb; border-radius: 999px; height: 10px; overflow: hidden; }
+    .progress-fill {
+      background: linear-gradient(90deg, #0f766e, #14b8a6);
+      height: 100%;
+      border-radius: 999px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+    .block {
+      background: white;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+      border-left: 5px solid #e5e7eb;
+    }
+    .block.rojo    { border-left-color: #ef4444; }
+    .block.naranja { border-left-color: #f59e0b; }
+    .block.azul    { border-left-color: #6366f1; }
+    .block.verde   { border-left-color: #10b981; }
+    .block.morado  { border-left-color: #7c3aed; }
+    .block-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+    .block-title { font-size: 15px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+    .block-time {
+      font-size: 11px;
+      font-weight: 700;
+      background: #f3f4f6;
+      color: #374151;
+      padding: 3px 10px;
+      border-radius: 999px;
+    }
+    .task {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      margin-bottom: 6px;
+      cursor: pointer;
+      transition: background 0.15s;
+      user-select: none;
+    }
+    .task:hover { background: #f9fafb; }
+    .task.done  { background: #f0fdf4; }
+    .task.done .task-text { text-decoration: line-through; color: #9ca3af; }
+    input[type="checkbox"] {
+      width: 20px; height: 20px;
+      accent-color: #0f766e;
+      flex-shrink: 0; margin-top: 1px; cursor: pointer;
+    }
+    .task-text { font-size: 14px; line-height: 1.5; color: #1f2937; }
+    .tag {
+      display: inline-block;
+      font-size: 10px; font-weight: 700;
+      border-radius: 999px; padding: 1px 7px;
+      margin-left: 6px; vertical-align: middle;
+    }
+    .tag.bug       { background: #fee2e2; color: #b91c1c; }
+    .tag.nuevo     { background: #dbeafe; color: #1d4ed8; }
+    .tag.router    { background: #ede9fe; color: #6d28d9; }
+    .tag.directiva { background: #fef3c7; color: #b45309; }
+    .tip {
+      font-size: 12px; color: #6b7280;
+      margin-top: 4px; padding-left: 0;
+      font-style: italic;
+    }
+    .divider {
+      text-align: center; font-size: 12px; color: #9ca3af;
+      margin: 20px 0 16px; font-weight: 600;
+      letter-spacing: 0.05em; text-transform: uppercase;
+    }
+    .entregables {
+      background: #fffbeb;
+      border: 1.5px dashed #f59e0b;
+      border-radius: 14px;
+      padding: 16px 20px;
+      margin-bottom: 16px;
+    }
+    .entregables h3 { font-size: 14px; font-weight: 700; color: #92400e; margin-bottom: 10px; }
+    .done-banner {
+      background: #0f766e; color: white;
+      border-radius: 14px; padding: 20px;
+      text-align: center; margin-top: 24px; display: none;
+    }
+    .done-banner.visible { display: block; }
+    .done-banner h2 { font-size: 22px; margin-bottom: 6px; }
+    .done-banner p  { font-size: 14px; opacity: 0.85; }
+    code {
+      background: #f3f4f6; border-radius: 4px;
+      padding: 1px 5px; font-size: 12px; font-family: monospace;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>✅ Checklist ABP_6 — BookList SPA</h1>
+  <p>Modo ADHD activado · Una tarea a la vez · Tú puedes, Mayé 💪</p>
+  <div class="timer-bar">
+    <span class="timer-pill">⏱ Tiempo estimado: ~3 hrs</span>
+    <span class="timer-pill">🔴 Crítico primero</span>
+    <span class="timer-pill">🧠 Un bloque a la vez</span>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-label">
+    <span>Tu progreso</span>
+    <span id="progress-text">0 / 21 tareas</span>
+  </div>
+  <div class="progress-bg">
+    <div class="progress-fill" id="progress-fill"></div>
+  </div>
+</div>
+
+<!-- BLOQUE 1 -->
+<div class="block rojo">
+  <div class="block-header">
+    <div class="block-title">🔴 BLOQUE 1 — Bugs rápidos</div>
+    <div class="block-time">⏱ ~30 min</div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Corregir typo: <code>requiered</code> → <code>required</code> <span class="tag bug">bug</span></div>
+      <div class="tip">📁 FormLibro.vue · en el input de Título</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Corregir ruta relativa: <code>detalle-libro/...</code> → <code>/detalle-libro/...</code> <span class="tag bug">bug</span></div>
+      <div class="tip">📁 ListaLibros.vue · el :to del router-link de cada libro</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Corregir <code>&lt;style scope&gt;</code> → <code>&lt;style scoped&gt;</code> <span class="tag bug">bug</span></div>
+      <div class="tip">📁 NavTab.vue · última línea del archivo</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Eliminar el import <code>provide</code> que no se usa <span class="tag bug">bug</span></div>
+      <div class="tip">📁 ListaLibros.vue · línea 2, sacar "provide" del import</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Mover botón Eliminar FUERA del <code>&lt;router-link&gt;</code> y agregarle <code>@click.stop</code> <span class="tag bug">bug</span></div>
+      <div class="tip">📁 ListaLibros.vue · el button está adentro del link, lo que navega al eliminar</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Corregir: <code>value="digital"</code> → <code>value="Digital"</code> <span class="tag bug">bug</span></div>
+      <div class="tip">📁 FormLibro.vue · checkbox de formato Digital (mayúscula)</div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOQUE 2 -->
+<div class="block naranja">
+  <div class="block-header">
+    <div class="block-title">🟠 BLOQUE 2 — InicioView (vista faltante)</div>
+    <div class="block-time">⏱ ~30 min</div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Escribir contenido en <code>InicioView.vue</code> <span class="tag nuevo">nuevo</span></div>
+      <div class="tip">📁 src/views/InicioView.vue · puede ser simple: título, descripción y un botón router-link a /libros</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Cambiar ruta <code>/</code> a InicioView y mover ListaLibros a <code>/libros</code> <span class="tag router">router</span></div>
+      <div class="tip">📁 src/router/index.js · cambiar el path de ListaLibros y agregar InicioView en /</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Actualizar los <code>&lt;router-link&gt;</code> en NavTab con las rutas nuevas <span class="tag router">router</span></div>
+      <div class="tip">📁 NavTab.vue · "Inicio" → / · "Mis Libros" → /libros · "Agregar" → /form-libros</div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOQUE 3 -->
+<div class="block azul">
+  <div class="block-header">
+    <div class="block-title">🔵 BLOQUE 3 — Libro.vue (componente vacío)</div>
+    <div class="block-time">⏱ ~40 min</div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Implementar <code>Libro.vue</code> con <code>defineProps(['libro'])</code> <span class="tag nuevo">nuevo</span></div>
+      <div class="tip">📁 src/components/Libro.vue · mostrar título, autor, categoría. Recibe libro como prop.</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Agregar <code>v-show</code> dentro de <code>Libro.vue</code> para la disponibilidad <span class="tag directiva">directiva</span></div>
+      <div class="tip">Ej: <code>v-show="libro.disponible"</code> para mostrar un badge "Disponible"</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Usar <code>Libro.vue</code> en <code>ListaLibros.vue</code> con <code>v-for</code> y <code>:libro="libro"</code> <span class="tag nuevo">nuevo</span></div>
+      <div class="tip">📁 ListaLibros.vue · importar el componente y reemplazar el &lt;li&gt; manual</div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOQUE 4 -->
+<div class="block verde">
+  <div class="block-header">
+    <div class="block-title">🟢 BLOQUE 4 — Directivas y modificadores faltantes</div>
+    <div class="block-time">⏱ ~20 min</div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Agregar modificador <code>.once</code> en algún evento <span class="tag directiva">directiva</span></div>
+      <div class="tip">Ej: en el botón Guardar Libro → <code>@click.once</code> o en un evento de bienvenida en InicioView</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Agregar <code>props: true</code> a la ruta dinámica de DetalleLibro <span class="tag router">router</span></div>
+      <div class="tip">📁 router/index.js · añadir <code>props: true</code> en la entrada de /detalle-libro/:id</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Agregar <code>v-else</code> en <code>DetalleLibro.vue</code> cuando el libro no existe</div>
+      <div class="tip">Después del div con <code>v-if="libro"</code>: <code>&lt;p v-else&gt;Libro no encontrado&lt;/p&gt;</code></div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Agregar validación en <code>guardarLibro()</code>: no guardar si título o autor están vacíos</div>
+      <div class="tip">📁 FormLibro.vue · un <code>if</code> simple antes del push y del redirect</div>
+    </div>
+  </div>
+</div>
+
+<!-- BLOQUE 5 -->
+<div class="block morado">
+  <div class="block-header">
+    <div class="block-title">🟣 BLOQUE 5 — Revisar y limpiar</div>
+    <div class="block-time">⏱ ~20 min</div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Correr <code>npm run dev</code> y revisar que no haya errores en la consola del navegador</div>
+      <div class="tip">Abrir DevTools (F12) → pestaña Console. Debe estar limpia.</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Probar el flujo completo: Inicio → Lista → Agregar libro → Ver detalle → Eliminar</div>
+      <div class="tip">Hacerlo como si fueras usuaria nueva que no conoce el código</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Borrar código comentado que ya no se usa</div>
+      <div class="tip">📁 App.vue tiene imports comentados · Código limpio = mejor evaluación</div>
+    </div>
+  </div>
+</div>
+
+<!-- ENTREGABLES -->
+<div class="divider">— entregables finales —</div>
+
+<div class="entregables">
+  <h3>📦 Entregables que pide la evaluación</h3>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Tomar capturas de pantalla de cada vista (o grabar video corto)</div>
+      <div class="tip">Mínimo: Inicio, Lista de Libros, Formulario, Detalle de un libro</div>
+    </div>
+  </div>
+
+  <div class="task" onclick="toggle(this)">
+    <input type="checkbox"/>
+    <div>
+      <div class="task-text">Actualizar (o crear) tu README con 3-5 decisiones técnicas tomadas</div>
+      <div class="tip">Ej: "Usé provide/inject porque...", "El estado vive en App.vue porque..."</div>
+    </div>
+  </div>
+</div>
+
+<div class="done-banner" id="done-banner">
+  <h2>🎉 ¡Proyecto terminado!</h2>
+  <p>Lo lograste. Respira, toma agua y entrégalo con orgullo. 📚</p>
+</div>
+
+<script>
+  const TOTAL = document.querySelectorAll('.task').length;
+
+  function toggle(el) {
+    const cb = el.querySelector('input[type="checkbox"]');
+    cb.checked = !cb.checked;
+    el.classList.toggle('done', cb.checked);
+    updateProgress();
+  }
+
+  function updateProgress() {
+    const done = document.querySelectorAll('.task.done').length;
+    const pct  = Math.round((done / TOTAL) * 100);
+    document.getElementById('progress-fill').style.width = pct + '%';
+    document.getElementById('progress-text').textContent = done + ' / ' + TOTAL + ' tareas';
+    document.getElementById('done-banner').classList.toggle('visible', done === TOTAL);
+  }
+
+  updateProgress();
+</script>
+
+</body>
+</html>

@@ -35,7 +35,7 @@ function guardarLibro(){
   <form @submit.prevent="guardarLibro">
     <!-- <apertura atributo="valor"></cierre> -->
     <div>
-      <input type="text" placeholder="Título del libro" v-model.trim="nuevoLibro.titulo" requiered/>
+      <input type="text" placeholder="Título del libro" v-model.trim="nuevoLibro.titulo" required/>
     </div>
     <div>
       <input type="text" placeholder="Autor" v-model.trim="nuevoLibro.autor" required/>
